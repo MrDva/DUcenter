@@ -9,7 +9,8 @@
         <result column="Point_Y" property="point_Y"></result>
         <result column="Datetime" property="datetime"></result>
         <association property="user" javaType="com.ithujiaze.entity.User">
-            <id column="Phone" property="phone"/>
+            <id column="User_Id" property="user_Id"/>
+            <result column="Phone" property="phone"/>
             <result column="Password" property="password"/>
             <result column="Affiliation" property="affiliation"/>
             <result column="Username" property="username"/>
@@ -28,13 +29,13 @@
     </resultMap>
     <select id="GetLogin_DataById" parameterType="int" resultMap="BaseResultMap">
        select l.*,u.* , r.*, a.*  from login_table as l ,user_table as u ,role_table as r, authority_table as a,role_authority_table as r_a
-       where l.phone=u.phone and u.role_id=r_a.role_id and r_a.authority_id =a.authority_id and l.phone=#{id};
+       where l.user_id=u.user_id and u.role_id=r_a.role_id and r_a.authority_id =a.authority_id and l.access_id=#{id};
     </select>
 
 
 
     <insert id="insert" parameterType="com.ithujiaze.entity.Login_Data">
-        insert into login_table(Phone,Mac,Address,Point_X,Point_Y,Datetime)
-         values (#{user.phone},#{mac},#{address},#{point_X},#{point_Y},#{datetime})
+        insert into login_table(User_Id,Mac,Address,Point_X,Point_Y,Datetime)
+         values (#{user.user_Id},#{mac},#{address},#{point_X},#{point_Y},#{datetime})
     </insert>
 </mapper>
