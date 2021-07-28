@@ -1,0 +1,29 @@
+server:
+  port: 9527
+spring:
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 10.11.32.195:8848        # 指定注册中心
+
+
+    gateway:
+      discovery:
+        locator:
+          enabled: true     # 开启从注册中心动态创建路由的功能，利用微服务名进行路由
+      routes:
+        - id: payment_routh4        # 动态路由
+          uri: http://10.11.47.145:8080      # 这个名字的服务中有两个服务，访问两个服务中相同的地址时，使用负载均衡
+          predicates:
+            - Path=/hello/**
+            #- After=2021-02-01T14:06:04.995+08:00[Asia/Shanghai]  # 在这个时间后才能访问Path
+            #- Cookie=username,chenyang     # 带上Cookie且内容为username=chenyang才能访问Path
+
+
+management:
+  endpoints: # 暴露bus刷新配置的端点
+    web:
+      exposure:
+        include: "*"
