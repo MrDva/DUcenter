@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ithujiaze.dao.UserTableMapper">
+    <resultMap id="BaseResultMap" type="com.ithujiaze.entity.User">
+        <result column="User_Id" property="user_Id"/>
+        <result column="Phone" property="phone"/>
+        <result column="Password" property="password"/>
+        <result column="Affiliation" property="affiliation"/>
+        <result column="Username" property="username"/>
+        <result column="Is_Delete" property="is_Delete"/>
+        <result column="Is_Login" property="is_Login"/>
+        <association property="role" javaType="com.ithujiaze.entity.Role">
+            <id column="Role_Id" property="role_Id"/>
+            <result column="Role_Name" property="role_Name"/>
+            <result column="Role_Level" property="role_Level"/>
+            <collection property="authoritys" ofType="com.ithujiaze.entity.Authority">
+                <id column="Authority_Id" property="authority_Id"/>
+                <result column="Authority_Name" property="authority_Name"/>
+            </collection>
+        </association>
+    </resultMap>
+    <select id="GetUserByUserId" resultMap="BaseResultMap" parameterType="int">
+      select u.* , r.*, a.* from user_table as u ,role_table as r, authority_table as a,role_authority_table as r_a
+      where u.role_id=r.role_id and r.role_id=r_a.role_id and r_a.authority_id =a.authority_id and u.user_id=#{id}
+    </select>
+    <select id="GetUserByUserId2" resultMap="BaseResultMap" parameterType="int">
+      select u.*  from user_table as u
+      where  u.user_id=#{id}
+    </select>
+
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ithujiaze.dao.AuthorityTableMapper">
+    <resultMap id="BaseResultMap" type="com.ithujiaze.entity.Authority">
+        <id column="Authority_Id" property="authority_Id"></id>
+        <result column="Authority_Name" property="authority_Name"></result>
+        <collection property="roles" ofType="com.ithujiaze.entity.Role">
+            <result column="Role_Id" property="role_Id"/>
+            <result column="Role_Name" property="role_Name"/>
+            <result column="Role_Level" property="role_Level"/>
+        </collection>
+    </resultMap>
+    <select id="GetAuthorityById" parameterType="int" resultMap="BaseResultMap">
+        select r.*,a.* from role_table as r, role_authority_table as r_a, authority_table as a
+        where r.role_Id=r_a.role_Id and r_a.authority_Id=a.authority_Id and a.authority_Id=#{id}
+    </select>
+
+</mapper>
