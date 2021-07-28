@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ithujiaze.dao.Login_DataTableMapper">
+    <resultMap id="BaseResultMap" type="com.ithujiaze.entity.Login_Data">
+        <id column="Access_id" property="access_id"></id>
+        <result column="Mac" property="mac"></result>
+        <result column="Address" property="address"></result>
+        <result column="Point_X" property="point_X"></result>
+        <result column="Point_Y" property="point_Y"></result>
+        <result column="Datetime" property="datetime"></result>
+        <association property="user" javaType="com.ithujiaze.entity.User">
+            <id column="Phone" property="phone"/>
+            <result column="Password" property="password"/>
+            <result column="Affiliation" property="affiliation"/>
+            <result column="Username" property="username"/>
+            <result column="Is_Delete" property="is_Delete"/>
+            <result column="Is_Login" property="is_Login"/>
+            <association property="role" javaType="com.ithujiaze.entity.Role">
+                <id column="Role_Id" property="role_Id"/>
+                <result column="Role_Name" property="role_Name"/>
+                <result column="Role_Level" property="role_Level"/>
+                <collection property="authoritys" ofType="com.ithujiaze.entity.Authority">
+                    <id column="Authority_Id" property="authority_Id"/>
+                    <result column="Authority_Name" property="authority_Name"/>
+                </collection>
+            </association>
+        </association>
+    </resultMap>
+    <select id="GetLogin_DataById" parameterType="int" resultMap="BaseResultMap">
+       select l.*,u.* , r.*, a.*  from login_table as l ,user_table as u ,role_table as r, authority_table as a,role_authority_table as r_a
+       where l.phone=u.phone and u.role_id=r_a.role_id and r_a.authority_id =a.authority_id and l.phone=#{id};
+    </select>
+
+
+
+    <insert id="insert" parameterType="com.ithujiaze.entity.Login_Data">
+        insert into login_table(Phone,Mac,Address,Point_X,Point_Y,Datetime)
+         values (#{user.phone},#{mac},#{address},#{point_X},#{point_Y},#{datetime})
+    </insert>
+</mapper>
