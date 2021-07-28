@@ -7,7 +7,8 @@
         <result column="Address" property="address"></result>
         <result column="Datetime" property="datetime"></result>
         <association property="user" javaType="com.ithujiaze.entity.User">
-            <id column="Phone" property="phone"/>
+            <id column="User_Id" property="user_Id"/>
+            <result column="Phone" property="phone"/>
             <result column="Password" property="password"/>
             <result column="Affiliation" property="affiliation"/>
             <result column="Username" property="username"/>
@@ -26,7 +27,7 @@
     </resultMap>
     <select id="GetThree_DataById" parameterType="int" resultMap="BaseResultMap">
        select t.*,u.* , r.*, a.*  from three_login_table as t ,user_table as u ,role_table as r, authority_table as a,role_authority_table as r_a
-       where t.phone=u.phone and u.role_id=r_a.role_id and r_a.authority_id =a.authority_id and t.phone=#{id};
+       where t.user_id=u.user_id and u.role_id=r_a.role_id and r_a.authority_id =a.authority_id and t.user_id=#{id};
     </select>
 
 
