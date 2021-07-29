@@ -10,9 +10,25 @@
             <result column="Role_Level" property="role_Level"/>
         </collection>
     </resultMap>
+
     <select id="GetAuthorityById" parameterType="int" resultMap="BaseResultMap">
-        select r.*,a.* from role_table as r, role_authority_table as r_a, authority_table as a
-        where r.role_Id=r_a.role_Id and r_a.authority_Id=a.authority_Id and a.authority_Id=#{id}
+      select * from authority_table where authority_Id=#{id} order  by authority_Id asc
     </select>
 
+    <select id="GetAuthorityAll" parameterType="int" resultType="com.ithujiaze.entity.Authority">
+        select * from authority_table  order  by  authority_Id asc
+    </select>
+
+    <update id="UpdateAuthorityById" parameterType="com.ithujiaze.entity.Authority">
+        update authority_table set authority_Name=#{authority_Name} where authority_Id=#{authority_Id}
+    </update>
+
+    <insert id="InsertAuthority" parameterType="com.ithujiaze.entity.Authority">
+        insert into authority_table(authority_Name)
+         values(#{authority_Name})
+    </insert>
+
+    <delete id="DeleteAuthorityById" parameterType="int">
+        delete from authority_table where authority_Id=#{id}
+    </delete>
 </mapper>

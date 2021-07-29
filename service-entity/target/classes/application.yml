@@ -33,4 +33,10 @@ mybatis:
 #  type-aliases-package: com.ithujiaze.entity
   # 配置映射文件
   mapper-locations: classpath:com.hujiaze.Mapper/*.xml
+# pagehelper
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
 

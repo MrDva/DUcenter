@@ -19,9 +19,9 @@
             </collection>
         </association>
     </resultMap>
-    <select id="GetUserByUserId" resultMap="BaseResultMap" parameterType="int">
+    <select id="GetUserByUserId" resultMap="BaseResultMap" parameterType="Map">
       select u.* , r.*, a.* from user_table as u ,role_table as r, authority_table as a,role_authority_table as r_a
-      where u.role_id=r.role_id and r.role_id=r_a.role_id and r_a.authority_id =a.authority_id and u.user_id=#{id}
+      where u.role_id=r.role_id and r.role_id=r_a.role_id and r_a.authority_id =a.authority_id and u.phone=#{phone} and u.password=#{password}
     </select>
     <select id="GetUserByUserId2" resultMap="BaseResultMap" parameterType="int">
       select u.*  from user_table as u
