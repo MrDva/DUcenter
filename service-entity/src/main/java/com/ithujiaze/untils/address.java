@@ -1,12 +1,15 @@
 package com.ithujiaze.untils;
 
+import com.ithujiaze.entity.Point;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
 
+@Service
 public class address {
     private final String ak = "xDp94ChRfcF7yBVY4wXUmlVAC3imEEtv";
 
@@ -77,45 +80,5 @@ public class address {
             e.printStackTrace();
         }
         return null;
-    }
-}
-
-class Point {
-    private String point_x;
-    private String point_y;
-
-    @Override
-    public String toString() {
-        return "Point{" +
-                "point_x='" + point_x + '\'' +
-                ", point_y='" + point_y + '\'' +
-                ", address='" + address + '\'' +
-                '}';
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    private String address;
-
-    public String getPoint_x() {
-        return point_x;
-    }
-
-    public void setPoint_x(String point_x) {
-        this.point_x = point_x;
-    }
-
-    public String getPoint_y() {
-        return point_y;
-    }
-
-    public void setPoint_y(String point_y) {
-        this.point_y = point_y;
     }
 }

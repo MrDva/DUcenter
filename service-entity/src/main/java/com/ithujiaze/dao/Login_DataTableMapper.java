@@ -11,6 +11,10 @@ import java.util.List;
 public interface Login_DataTableMapper {
     public List<Login_Data> GetLogin_DataById(int id);
 
+    public List<Login_Data> GetLogin_DataAll();
+
+    public Login_Data GetLogin_DataByPhoneNew(String phone);
+
     public List<Login_Data> GetLogin_DataByIdNowDay(int id);
 
     public List<Login_Data> GetLogin_DataByIdSevenDay(int id);

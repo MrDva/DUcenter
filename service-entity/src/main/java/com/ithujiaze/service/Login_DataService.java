@@ -2,12 +2,15 @@ package com.ithujiaze.service;
 
 import com.itchenyang.result.R;
 import com.ithujiaze.entity.Login_Data;
+import com.ithujiaze.entity.Point;
 import com.ithujiaze.entity.Province;
 
 import java.util.List;
 
 public interface Login_DataService {
     public R GetLogin_DataById(int id);
+
+    public Point login(String mac, String ip, String phone);
 
     public R GetLogin_DataByIdNowDay(int id);
 
@@ -34,4 +37,6 @@ public interface Login_DataService {
     public R GetLogin_NumByAddressOneMonth(List<Province> citys);
 
     public R DeleteLogin_DataByThreeMonth();
+
+    public  R GetPageAll(int page);
 }

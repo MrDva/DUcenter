@@ -27,6 +27,14 @@
             </association>
         </association>
     </resultMap>
+
+    <select id="GetLogin_DataByPhoneNew" parameterType="String" resultMap="BaseResultMap">
+        select l.* from login_table as l,user_table as u  WHERE u.user_Id =l.user_Id and u.phone=#{phone} order by l.datetime desc limit 1
+    </select>
+
+    <select id="GetLogin_DataAll"  resultMap="BaseResultMap">
+       select l.*,u.username,u.phone from login_table as l,user_table as u  WHERE u.user_Id =l.user_Id order by l.datetime desc
+    </select>
     <!--某人的全部数据-->
     <select id="GetLogin_DataById" parameterType="int" resultMap="BaseResultMap">
        select l.*,u.username,u.phone from login_table as l,user_table as u  WHERE u.user_Id =l.user_Id and l.user_Id=#{id} order by l.datetime desc

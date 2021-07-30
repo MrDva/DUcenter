@@ -87,4 +87,8 @@ public class Login_DataController {
         return login_dataService.DeleteLogin_DataByThreeMonth();
     }
 
+    @GetMapping("/GetPageAll")
+    public R GetPageAll(@RequestParam("page") int page){
+        return login_dataService.GetPageAll(page);
+    }
 }
