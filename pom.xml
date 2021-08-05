@@ -12,6 +12,9 @@
         <module>common</module>
         <module>service-base</module>
         <module>service-gateway</module>
+        <module>UserService</module>
+        <module>service-entity</module>
+        <module>busyness</module>
     </modules>
 
     <parent>

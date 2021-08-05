@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itjizhiyong.mapper.AuthorityTableMapper">
+    <resultMap id="BaseResultMap" type="com.itjizhiyong.entities.Authority">
+        <id column="Authority_Id" property="authority_Id"></id>
+        <result column="Authority_Name" property="authority_Name"></result>
+        <collection property="roles" ofType="com.itjizhiyong.entities.Role">
+            <result column="Role_Id" property="role_Id"/>
+            <result column="Role_Name" property="role_Name"/>
+            <result column="Role_Level" property="role_Level"/>
+        </collection>
+    </resultMap>
+    <select id="GetAuthorityById" parameterType="int" resultMap="BaseResultMap">
+      select * from authority_table where authority_Id=#{id} order  by authority_Id asc
+    </select>
+    <select id="GetAuthorityByRoleId" parameterType="int" resultMap="BaseResultMap">
+        select * from authority_table as a ,role_authority_table as r_a where a.Authority_Id=r_a.Authority_Id                                                                   and r_a.Role_Id =#{id}
+    </select>
+    <select id="GetAuthorityAll" parameterType="int" resultMap="BaseResultMap">
+        select * from authority_table  order  by  authority_Id asc
+    </select>
+    <update id="UpdateAuthorityById" parameterType="com.ithujiaze.entity.Authority">
+        update authority_table set authority_Name=#{authority_Name} where authority_Id=#{authority_Id}
+    </update>
+    <insert id="InsertAuthority" parameterType="com.ithujiaze.entity.Authority">
+        insert into authority_table(authority_Name)
+         values(#{authority_Name})
+    </insert>
+    <delete id="DeleteAuthorityById" parameterType="int">
+        delete from authority_table where authority_Id=#{id}
+    </delete>
+</mapper>

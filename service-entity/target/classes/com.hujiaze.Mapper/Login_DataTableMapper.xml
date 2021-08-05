@@ -9,7 +9,8 @@
         <result column="Point_Y" property="point_Y"></result>
         <result column="Datetime" property="datetime"></result>
         <association property="user" javaType="com.ithujiaze.entity.User">
-            <id column="Phone" property="phone"/>
+            <id column="User_Id" property="user_Id"/>
+            <result column="Phone" property="phone"/>
             <result column="Password" property="password"/>
             <result column="Affiliation" property="affiliation"/>
             <result column="Username" property="username"/>
@@ -26,15 +27,82 @@
             </association>
         </association>
     </resultMap>
-    <select id="GetLogin_DataById" parameterType="int" resultMap="BaseResultMap">
-       select l.*,u.* , r.*, a.*  from login_table as l ,user_table as u ,role_table as r, authority_table as a,role_authority_table as r_a
-       where l.phone=u.phone and u.role_id=r_a.role_id and r_a.authority_id =a.authority_id and l.phone=#{id};
+
+    <select id="GetLogin_DataByPhoneNew" parameterType="String" resultMap="BaseResultMap">
+        select l.* from login_table as l,user_table as u  WHERE u.user_Id =l.user_Id and u.phone=#{phone} order by l.datetime desc limit 1
     </select>
 
-
-
-    <insert id="insert" parameterType="com.ithujiaze.entity.Login_Data">
-        insert into login_table(Phone,Mac,Address,Point_X,Point_Y,Datetime)
-         values (#{user.phone},#{mac},#{address},#{point_X},#{point_Y},#{datetime})
+    <select id="GetLogin_DataAll"  resultMap="BaseResultMap">
+       select l.*,u.username,u.phone from login_table as l,user_table as u  WHERE u.user_Id =l.user_Id order by l.datetime desc
+    </select>
+    <!--某人的全部数据-->
+    <select id="GetLogin_DataById" parameterType="int" resultMap="BaseResultMap">
+       select l.*,u.username,u.phone from login_table as l,user_table as u  WHERE u.user_Id =l.user_Id and l.user_Id=#{id} order by l.datetime asc
+    </select>
+    <!--某人当天的全部数据-->
+    <select id="GetLogin_DataByIdNowDay" parameterType="int" resultMap="BaseResultMap">
+       select l.*,u.username,u.phone from login_table as l,user_table as u  WHERE u.user_Id =l.user_Id and l.user_Id=#{id}
+        and to_days(l.Datetime) = to_days(now()) order by l.datetime asc
+    </select>
+    <!--某人7天的全部数据-->
+    <select id="GetLogin_DataByIdSevenDay" parameterType="int" resultMap="BaseResultMap">
+       select l.*,u.username,u.phone from login_table as l,user_table as u  WHERE u.user_Id =l.user_Id and l.user_Id=#{id}
+       and DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(l.datetime) order by l.datetime asc
+    </select>
+    <!--某人7天的全部数据-->
+    <select id="GetLogin_DataByIdOneMonth" parameterType="int" resultMap="BaseResultMap">
+       select l.*,u.username,u.phone from login_table as l,user_table as u  WHERE u.user_Id =l.user_Id and l.user_Id=#{id}
+       and DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt;= date(l.datetime) order by l.datetime asc
+    </select>
+    <!--某地的全部数据-->
+    <select id="GetLogin_DataByAddress" resultMap="BaseResultMap" parameterType="String">
+        select l.*,u.username,u.phone from login_table as l ,user_table as u where l.address like #{address}
+        and l.user_id=u.user_id order by l.datetime desc
+    </select>
+    <!--某地当天的数据-->
+    <select id="GetLogin_DataByAddressNowDay" resultMap="BaseResultMap" parameterType="String">
+        select l.*,u.username,u.phone  from login_table as l ,user_table as u  where l.address like #{address}
+         and l.user_id=u.user_id
+         and to_days(l.Datetime) = to_days(now()) order by l.datetime asc
+    </select>
+    <!--某地7天的数据-->
+    <select id="GetLogin_DataByAddressSevenDay" resultMap="BaseResultMap" parameterType="String">
+        select l.*,u.username,u.phone from login_table as l ,user_table as u  where l.address like #{address}
+        and l.user_id=u.user_id
+        and DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(l.datetime)  order by l.datetime asc
+    </select>
+    <!--某地30天的数据-->
+    <select id="GetLogin_DataByAddressOneMonth" resultMap="BaseResultMap" parameterType="String">
+        select l.*,u.username,u.phone from login_table as l ,user_table as u  where l.address like #{address}
+        and l.user_id=u.user_id
+        and DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt;= date(l.datetime)  order by l.datetime asc
+    </select>
+    <!--某地的数量-->
+    <select id="GetLogin_NumByAddress" resultType="int" parameterType="String">
+        select count(*) from login_table as l where l.address like #{address}
+    </select>
+    <!--某地当天的数量-->
+    <select id="GetLogin_NumByAddressNowDay" resultType="int" parameterType="String">
+        select count(*)  from login_table as l   where l.address like #{address}
+         and to_days(l.Datetime) = to_days(now())
+    </select>
+    <!--某地7天的数量-->
+    <select id="GetLogin_NumByAddressSevenDay" resultType="int" parameterType="String">
+        select count(*) from login_table as l  where l.address like #{address}
+        and DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(l.datetime)
+    </select>
+    <!--某地30天的数量-->
+    <select id="GetLogin_NumByAddressOneMonth" resultType="int" parameterType="String">
+        select count(*) from login_table as l where l.address like #{address}
+        and DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt;= date(l.datetime)
+    </select>
+    <!--插入数据-->
+    <insert id="Insert" parameterType="com.ithujiaze.entity.Login_Data">
+        insert into login_table(User_Id,Mac,Address,Point_X,Point_Y,Datetime)
+         values (#{user.user_Id},#{mac},#{address},#{point_X},#{point_Y},#{datetime})
     </insert>
+    <!--删除90天前的数据-->
+    <delete id="DeleteLogin_DataByThreeMonth">
+         delete from login_table where DATE_SUB(CURDATE(), INTERVAL 90 DAY) &gt;= date(Datetime)
+    </delete>
 </mapper>

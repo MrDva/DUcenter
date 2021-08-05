@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ithujiaze.dao.AreaTableMapper">
+    <resultMap id="BaseResultMap" type="com.ithujiaze.entity.Area">
+        <id column="area_Id" property="area_Id"></id>
+        <result column="area_Name" property="area_Name"></result>
+        <result column="city_Id" property="city_Id"></result>
+    </resultMap>
+
+
+    <select id="GetAreaByCity" parameterType="int"  resultMap="BaseResultMap">
+        select * from cities as c ,area_table as a where c.id=a.city_id and a.city_id=#{id}
+    </select>
+    <select id="GetAreaByCityString" parameterType="String"  resultMap="BaseResultMap">
+        select a.* from cities as c ,area_table as a where c.id=a.city_id and c.name like #{name}
+    </select>
+
+
+    <insert id="insertArea" parameterType="Map" >
+        insert into  area_table(city_id,area_name) values (#{city_id,javaType=String,jdbcType=INTEGER},#{area_name})
+    </insert>
+    
+</mapper>

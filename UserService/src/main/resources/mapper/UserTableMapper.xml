@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itjizhiyong.mapper.LoginMapper">
+<resultMap id="BaseResultMap" type="com.itjizhiyong.entities.LoginNum">
+    <result column="User_Id" property="user_Id"/>
+    <result column="Phone" property="phone"/>
+    <result column="Password" property="password"/>
+    <result column="Affiliation" property="affiliation"/>
+    <result column="Username" property="username"/>
+<!--    <result column="Is_Delete" property="is_Delete"/>-->
+<!--    <result column="Is_Login" property="is_Login"/>-->
+<!--    <association property="role" javaType="com.itjizhiyong.entities.Role">-->
+    <association property="role" javaType="com.ithujiaze.entity.Role">
+        <id column="Role_Id" property="role_Id"/>
+        <result column="Role_Name" property="role_Name"/>
+        <result column="Role_Level" property="role_Level"/>
+        <collection property="authoritys" ofType="com.ithujiaze.entity.Authority">
+            <id column="Authority_Id" property="authority_Id"/>
+            <result column="Authority_Name" property="authority_Name"/>
+        </collection>
+    </association>
+</resultMap>
+
+<select id="GetUser" resultMap="BaseResultMap" parameterType="Map">
+    select u.Phone,u.Username, u.User_Id, u.Affiliation, r.Role_Id,r.Role_Name,Role_Level,a.Authority_Name from user_table as u,
+                                               role_table as r,
+                                               authority_table as a,
+                                               role_authority_table as r_a
+    where u.Phone=#{Phone} and u.Password =#{Password} and u.Role_Id=r.Role_Id and r.Role_Id=r_a.Role_Id and r_a.Authority_Id =a.Authority_Id
+</select>
+
+    <select id="getUserById" parameterType="int" resultMap="BaseResultMap">
+        select *
+        from user_table where User_Id=#{id};
+    </select>
+
+    <update id="UserUpdate" parameterType="com.itjizhiyong.entities.User">
+        update user_table set Password=#{Password},Affiliation=#{affiliation},
+                              Username=#{username},Phone=#{Phone},
+                              Role_Id=#{Role_Id} where User_Id=#{user_Id}
+    </update>
+    <select id="GetUserByAddress" parameterType="String" resultMap="BaseResultMap">
+        select u.Phone, u.User_Id, u.Affiliation,u.Username, r.Role_Id,r.Role_Name from user_table as u,role_table as r
+        where  u.Role_Id=r.Role_Id and u.Affiliation like #{address}
+    </select>
+<!--有问题-->
+    <insert id="UserAdd" parameterType="com.itjizhiyong.entities.User">
+        insert into user_table(Password,Affiliation,Username,Phone,Role_Id)
+        values (#{Password},#{affiliation},#{username},#{Phone},#{Role_Id})
+    </insert>
+
+    <delete id="UserDelete" parameterType="int">
+        delete from user_table where User_Id = #{User_Id}
+    </delete>
+
+
+</mapper>

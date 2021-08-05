@@ -2,6 +2,7 @@ package com.itchenyang.utills;
 
 import com.itchenyang.exception.BusinessException;
 import com.itchenyang.result.ResponseEnum;
+import com.ithujiaze.entity.Role;
 import io.jsonwebtoken.*;
 import org.springframework.util.StringUtils;
 

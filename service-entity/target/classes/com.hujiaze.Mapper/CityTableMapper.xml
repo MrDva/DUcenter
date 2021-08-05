@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ithujiaze.dao.CityTableMapper">
+<resultMap id="BaseResultMap" type="com.ithujiaze.entity.city">
+    <result column="id" property="citysId"/>
+    <result column="name" property="name"/>
+    <result column="pid" property="value"/>
+</resultMap>
+
+
+    <select id="GetCity" resultMap="BaseResultMap">
+        select * from cities
+    </select>
+    <select id="GetCityByP" parameterType="String" resultMap="BaseResultMap">
+      select c.* from cities as c,provinces as p where c.pid=p.provinceId and p.provinceName like #{name}
+    </select>
+    <insert id="insertCity" parameterType="Map" >
+        insert into  cities(pid,name) values (#{pid,javaType=String,jdbcType=INTEGER},#{name})
+    </insert>
+    
+</mapper>

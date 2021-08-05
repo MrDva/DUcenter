@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itjizhiyong.mapper.Role_AuthorityTableMapper">
+    <resultMap id="BaseResultMap" type="com.itjizhiyong.entities.Role_Authority">
+        <result column="Role_Authority_Id" property="role_Authority_Id"/>
+        <result column="Role_Id" property="role_Id"/>
+        <result column="Authority_Id" property="authority_Id"/>
+    </resultMap>
+
+    <delete id="DeleteAllByRoleId" parameterType="int">
+       delete from role_authority_table where Role_Id=#{role_id}
+   </delete>
+
+    <insert id="InsertAllByRoleId">
+        insert into role_authority_table(role_id,authority_Id) values
+        <foreach collection="list" item="Role_Authority" separator=",">
+            (#{Role_Authority.role_Id}, #{Role_Authority.authority_Id})
+        </foreach>
+    </insert>
+
+</mapper>

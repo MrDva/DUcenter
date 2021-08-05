@@ -1,0 +1,21 @@
+package com.ithujiaze.service;
+
+import com.itchenyang.result.R;
+import com.ithujiaze.entity.Authority;
+
+import java.util.List;
+
+public interface AuthorityService {
+    public R GetAuthorityById(int id);
+
+    public R InsertAuthority(Authority authority);
+
+    public R GetAuthorityAll();
+
+    public R DeleteAuthorityById(int id);
+
+//    public R GetPage(int page);
+
+    public R UpdateAuthorityById(Authority authority);
+
+}

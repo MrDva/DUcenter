@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itjizhiyong.mapper.RoleTableMapper">
+    <resultMap id="BaseResultMap" type="com.itjizhiyong.entities.Role">
+        <result column="Role_Id" property="role_Id"/>
+        <result column="Role_Name" property="role_Name"/>
+        <result column="Role_Level" property="role_Level"/>
+        <collection property="authoritys" ofType="com.itjizhiyong.entities.Authority">
+            <id column="Authority_Id" property="authority_Id"></id>
+            <result column="Authority_Name" property="authority_Name"></result>
+        </collection>
+    </resultMap>
+    <select id="GetRoleById" parameterType="int" resultMap="BaseResultMap">
+        select r.*,a.* from role_table as r, role_authority_table as r_a, authority_table as a
+        where r.role_Id=r_a.role_Id and r_a.authority_Id=a.authority_Id and r.role_Id=#{id}
+    </select>
+    <select id="GetRoleALl" resultMap="BaseResultMap">
+        select * from role_table
+    </select>
+    <update id="UpdateRoleById" parameterType="com.itjizhiyong.entities.Role" >
+        update  role_table set role_Name=#{role_Name} where Role_Id=#{id}
+    </update>
+    <delete id="DeleteRoleById" parameterType="int">
+        delete  from role_table where Role_Id=#{id}
+    </delete>
+    <insert id="InsertRoleId" parameterType="com.itjizhiyong.entities.Role">
+        insert into role_table(role_name, role_level) values (#{role_Name},#{role_level})
+    </insert>
+</mapper>

@@ -13,7 +13,7 @@ public class R {
     private String message;
     private Map<String, Object> data = new HashMap<>();
 
-    private R(){};    // 私有构造函数
+    public R(){};    // 私有构造函数
 
     public static R ok() {
         R r = new R();

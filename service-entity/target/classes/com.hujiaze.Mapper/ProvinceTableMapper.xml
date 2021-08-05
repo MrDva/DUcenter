@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ithujiaze.dao.ProvinceTableMapper">
+    <resultMap id="BaseResultMap" type="com.ithujiaze.entity.Province">
+        <id column="ProvinceId" property="provinceId"></id>
+        <result column="ProvinceName" property="provinceName"></result>
+        <collection property="citysName" ofType="com.ithujiaze.entity.city">
+            <result column="id" property="citysId"/>
+            <result column="name" property="name"/>
+        </collection>
+    </resultMap>
+
+    <select id="GetCityByP" parameterType="String" resultMap="BaseResultMap">
+      select p.*,c.* from provinces as p ,cities as c where p.provinceId=c.pid  and p.provinceName like #{name}
+    </select>
+    <select id="GetCity" parameterType="String" resultMap="BaseResultMap">
+      select p.*,c.* from provinces as p ,cities as c where p.provinceId=c.pid
+    </select>
+    <select id="GetProvinces" resultMap="BaseResultMap">
+        select  *  from provinces
+    </select>
+    <insert id="insertP" parameterType="com.ithujiaze.entity.Province" >
+        insert into  provinces(provinceName) values (#{provinceName})
+    </insert>
+
+</mapper>
